@@ -14,7 +14,7 @@ class CreateForegroundServiceActivity : AppCompatActivity() { // implements View
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_foreground_service)
 
-        title = "dev2qa.com - Android Foreground Service Example."
+        title = "Notifigachi"
 
         val startServiceButton = findViewById(R.id.start_foreground_service_button) as Button
         startServiceButton.setOnClickListener {

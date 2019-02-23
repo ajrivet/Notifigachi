@@ -53,7 +53,8 @@ class MyForeGroundService : Service() {
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
         // Create notification builder.
-        val builder = NotificationCompat.Builder(this)
+        val builder = NotificationCompat.Builder(this,"vet.alecri.notifigachi" )
+
 
         // Make notification show big text.
         val bigTextStyle = NotificationCompat.BigTextStyle()
