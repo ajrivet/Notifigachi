@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Notifigachi</string>
+    <string name="CHANNEL_NAME">notification</string>
+    <string name="CHANNEL_DESCRIPTION">Notification for Notifigachi</string>
 </resources>

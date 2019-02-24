@@ -10,6 +10,12 @@ import android.os.IBinder
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import android.widget.Toast
+import android.app.NotificationManager
+import android.app.NotificationChannel
+import android.content.Context
+import android.os.Build
+import android.widget.RemoteViews
+import vet.alecri.notifigachi.R
 
 
 class MyForeGroundService : Service() {
@@ -22,9 +28,26 @@ class MyForeGroundService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG_FOREGROUND_SERVICE, "My foreground service onCreate().")
+
+        // As far as I can tell, onCreate() is only run once when the service is started
+
+        // Create the notification channel so that we can create a notification
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Support for Android Oreo: Notification Channels
+            val channel = NotificationChannel(
+                "vet.alecri.notifigachi",
+                "Channel_name_to_be_displayed_in_Settings",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            manager.createNotificationChannel(channel)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        // As opposed to onCreate, onStartCommand is run each time an intent is sent to the service to represent an action
+
         if (intent != null) {
             val action = intent.action
 
@@ -39,6 +62,10 @@ class MyForeGroundService : Service() {
                 }
                 ACTION_PLAY -> Toast.makeText(applicationContext, "You click Play button.", Toast.LENGTH_LONG).show()
                 ACTION_PAUSE -> Toast.makeText(applicationContext, "You click Pause button.", Toast.LENGTH_LONG).show()
+
+                A_BUTTON -> Toast.makeText(applicationContext, "A Button", Toast.LENGTH_LONG).show()
+                B_BUTTON -> Toast.makeText(applicationContext, "B Button", Toast.LENGTH_LONG).show()
+                C_BUTTON -> Toast.makeText(applicationContext, "C Button", Toast.LENGTH_LONG).show()
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -52,8 +79,14 @@ class MyForeGroundService : Service() {
         val intent = Intent()
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
+        val notificationLayout = RemoteViews(packageName, R.layout.custom_notification)
+
         // Create notification builder.
         val builder = NotificationCompat.Builder(this,"vet.alecri.notifigachi" )
+            .setSmallIcon(R.drawable.notification_icon_background)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+            .setCustomContentView(notificationLayout)
+            .setCustomBigContentView(notificationLayout)
 
 
         // Make notification show big text.
@@ -67,8 +100,10 @@ class MyForeGroundService : Service() {
         builder.setSmallIcon(vet.alecri.notifigachi.R.mipmap.ic_launcher)
         val largeIconBitmap = BitmapFactory.decodeResource(resources, vet.alecri.notifigachi.R.drawable.ic_fiber_manual_record_black_24dp)
         builder.setLargeIcon(largeIconBitmap)
+
         // Make the notification max priority.
         builder.priority = Notification.PRIORITY_MAX
+
         // Make head-up notification.
         builder.setFullScreenIntent(pendingIntent, true)
 
@@ -114,5 +149,11 @@ class MyForeGroundService : Service() {
         val ACTION_PAUSE = "ACTION_PAUSE"
 
         val ACTION_PLAY = "ACTION_PLAY"
+
+        val A_BUTTON = "A_BUTTON"
+
+        val B_BUTTON = "B_BUTTON"
+
+        val C_BUTTON = "C_BUTTON"
     }
 }

@@ -29,5 +29,28 @@ class CreateForegroundServiceActivity : AppCompatActivity() { // implements View
             intent.action = MyForeGroundService.ACTION_STOP_FOREGROUND_SERVICE
             startService(intent)
         }
+
+        // Button intents haha hehe
+        // Need to go somewhere else
+//        val aButtonServiceButton = findViewById(R.id.AButton) as Button
+//        aButtonServiceButton.setOnClickListener{
+//            val intent = Intent(this@CreateForegroundServiceActivity, MyForeGroundService::class.java)
+//            intent.action = MyForeGroundService.A_BUTTON
+//            startService(intent)
+//        }
+//
+//        val bButtonServiceButton = findViewById(R.id.BButton) as Button
+//        bButtonServiceButton.setOnClickListener{
+//            val intent = Intent(this@CreateForegroundServiceActivity, MyForeGroundService::class.java)
+//            intent.action = MyForeGroundService.B_BUTTON
+//            startService(intent)
+//        }
+//
+//        val cButtonServiceButton = findViewById(R.id.CButton) as Button
+//        cButtonServiceButton.setOnClickListener{
+//            val intent = Intent(this@CreateForegroundServiceActivity, MyForeGroundService::class.java)
+//            intent.action = MyForeGroundService.C_BUTTON
+//            startService(intent)
+//        }
     }
 }
