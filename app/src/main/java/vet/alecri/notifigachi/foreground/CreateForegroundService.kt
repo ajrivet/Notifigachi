@@ -3,19 +3,17 @@ package vet.alecri.notifigachi.foreground
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import vet.alecri.notifigachi.R
 
+class CreateForegroundServiceActivity : AppCompatActivity() {
 
-import kotlinx.android.synthetic.main.custom_notification.*
-
-
-class CreateForegroundServiceActivity : AppCompatActivity() { // implements View.OnClickListener{
+    private val br = ButtonBroadcastReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,36 +34,45 @@ class CreateForegroundServiceActivity : AppCompatActivity() { // implements View
             intent.action = MyForeGroundService.ACTION_STOP_FOREGROUND_SERVICE
             startService(intent)
         }
+
+        // Setup a broadcast filter for our button presses
+        val filter = IntentFilter()
+        filter.addAction(MyForeGroundService.A_BUTTON)
+        filter.addAction(MyForeGroundService.B_BUTTON)
+        filter.addAction(MyForeGroundService.C_BUTTON)
+
+
+        // Register the Receiver for this context
+        this.registerReceiver(br, filter)
+
     }
 
+    override fun onDestroy() {
+
+        // Unregister the broadcast receiver
+        this.unregisterReceiver(br)
+
+        super.onDestroy()
+    }
 
 }
 
-class mCloseReceiver : BroadcastReceiver() {
+// This is where we handle button presses haha
+class ButtonBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        Log.d("BROADCASTRECEIVER", "Receiver a broadcast" + intent.action)
 
-    }
-}
+        if (intent != null) {
+            val action = intent.action
 
-class AButtonReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "A Button", Toast.LENGTH_LONG).show()
-        Log.d("BROADCAST", "A Button broadcast received")
-    }
-}
-
-class BButtonReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "B Button", Toast.LENGTH_LONG).show()
-        Log.d("BROADCAST", "B Button broadcast received")
-
-    }
-}
-
-class CButtonReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "C Button", Toast.LENGTH_LONG).show()
-        Log.d("BROADCAST", "C Button broadcast received")
-
+            when (action) {
+                MyForeGroundService.A_BUTTON -> Toast.makeText(context, "A Button", Toast.LENGTH_LONG).show()
+                MyForeGroundService.B_BUTTON -> Toast.makeText(context, "B Button", Toast.LENGTH_LONG).show()
+                MyForeGroundService.C_BUTTON -> Toast.makeText(context, "C Button", Toast.LENGTH_LONG).show()
+                else -> Toast.makeText(context, "BROADCAST NOT RECOGNIZED", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            Log.d("ButtonBroadcastReceiver", "Received null broadcast message")
+        }
     }
 }

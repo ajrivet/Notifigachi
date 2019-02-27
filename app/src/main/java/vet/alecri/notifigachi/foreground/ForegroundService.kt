@@ -1,6 +1,5 @@
 package vet.alecri.notifigachi.foreground
 
-import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
@@ -14,7 +13,6 @@ import android.content.Context
 import android.os.Build
 import android.widget.RemoteViews
 import vet.alecri.notifigachi.R
-import android.content.BroadcastReceiver
 
 class MyForeGroundService : Service() {
 
@@ -107,12 +105,10 @@ class MyForeGroundService : Service() {
         val openAppIntent = Intent(this, MyForeGroundService::class.java)
 
         // call broadcast when any control of notification is clicked.
-        val closeNotification = Intent(MyForeGroundService.CLOSE_NOTIFICATION)
         val aButtonIntent = Intent(MyForeGroundService.A_BUTTON)
         val bButtonIntent = Intent(MyForeGroundService.B_BUTTON)
         val cButtonIntent = Intent(MyForeGroundService.C_BUTTON)
 
-        val pendingCloseIntent = PendingIntent.getBroadcast(this, 0, closeNotification, PendingIntent.FLAG_UPDATE_CURRENT)
         val pendingAButtonIntent = PendingIntent.getBroadcast(this, 0, aButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val pendingBButtonIntent = PendingIntent.getBroadcast(this, 0, bButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val pendingCButtonIntent = PendingIntent.getBroadcast(this, 0, cButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT)

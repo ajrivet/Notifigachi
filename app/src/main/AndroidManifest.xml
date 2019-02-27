@@ -12,27 +12,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <receiver android:name=".foreground.AButtonReceiver">
-            <intent-filter>
-                <action android:name="vet.alecri.notifigachi.AButton">
-                </action>
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name=".foreground.BButtonReceiver">
-            <intent-filter>
-                <action android:name="vet.alecri.notifigachi.BButton">
-                </action>
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name=".foreground.CButtonReceiver">
-            <intent-filter>
-                <action android:name="vet.alecri.notifigachi.CButton">
-                </action>
-            </intent-filter>
-        </receiver>
-
         <service
             android:name=".foreground.MyForeGroundService"
             android:enabled="true"
