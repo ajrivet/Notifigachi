@@ -4,8 +4,6 @@ import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.IBinder
 import android.support.v4.app.NotificationCompat
 import android.util.Log
@@ -16,7 +14,7 @@ import android.content.Context
 import android.os.Build
 import android.widget.RemoteViews
 import vet.alecri.notifigachi.R
-
+import android.content.BroadcastReceiver
 
 class MyForeGroundService : Service() {
 
@@ -37,8 +35,8 @@ class MyForeGroundService : Service() {
             // Support for Android Oreo: Notification Channels
             val channel = NotificationChannel(
                 "vet.alecri.notifigachi",
-                "Channel_name_to_be_displayed_in_Settings",
-                NotificationManager.IMPORTANCE_DEFAULT
+                "Notifigachi Persistent Notification",
+                NotificationManager.IMPORTANCE_HIGH
             )
             manager.createNotificationChannel(channel)
         }
@@ -72,63 +70,61 @@ class MyForeGroundService : Service() {
     }
 
     /* Used to build and start foreground service. */
-    private fun startForegroundService() {
+    fun startForegroundService() {
         Log.d(TAG_FOREGROUND_SERVICE, "Start foreground service.")
 
         // Create notification default intent.
         val intent = Intent()
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
-        val notificationLayout = RemoteViews(packageName, R.layout.custom_notification)
+        val notificationLayout = RemoteViews(packageName, vet.alecri.notifigachi.R.layout.custom_notification)
+
+        // Set the remoteview Intents for our buttons
+        setRemoteViews(notificationLayout)
+
 
         // Create notification builder.
         val builder = NotificationCompat.Builder(this,"vet.alecri.notifigachi" )
             .setSmallIcon(R.drawable.notification_icon_background)
-            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+//            .setStyle(NotificationCompat.DecoratedCustomViewStyle()) // dont call to ignore header
             .setCustomContentView(notificationLayout)
-            .setCustomBigContentView(notificationLayout)
+//            .setPriority(NotificationManager.IMPORTANCE_HIGH)
+            .setFullScreenIntent(pendingIntent, true)
 
-
-        // Make notification show big text.
-        val bigTextStyle = NotificationCompat.BigTextStyle()
-        bigTextStyle.setBigContentTitle("Music player implemented by foreground service.")
-        bigTextStyle.bigText("Android foreground service is a android service which can run in foreground always, it can be controlled by user via notification.")
-        // Set big text style.
-        builder.setStyle(bigTextStyle)
-
-        builder.setWhen(System.currentTimeMillis())
-        builder.setSmallIcon(vet.alecri.notifigachi.R.mipmap.ic_launcher)
-        val largeIconBitmap = BitmapFactory.decodeResource(resources, vet.alecri.notifigachi.R.drawable.ic_fiber_manual_record_black_24dp)
-        builder.setLargeIcon(largeIconBitmap)
-
-        // Make the notification max priority.
-        builder.priority = Notification.PRIORITY_MAX
-
-        // Make head-up notification.
-        builder.setFullScreenIntent(pendingIntent, true)
-
-        // Add Play button intent in notification.
-        val playIntent = Intent(this, MyForeGroundService::class.java)
-        playIntent.action = ACTION_PLAY
-        val pendingPlayIntent = PendingIntent.getService(this, 0, playIntent, 0)
-        val playAction = NotificationCompat.Action(android.R.drawable.ic_media_play, "Play", pendingPlayIntent)
-        builder.addAction(playAction)
-
-        // Add Pause button intent in notification.
-        val pauseIntent = Intent(this, MyForeGroundService::class.java)
-        pauseIntent.action = ACTION_PAUSE
-        val pendingPrevIntent = PendingIntent.getService(this, 0, pauseIntent, 0)
-        val prevAction = NotificationCompat.Action(android.R.drawable.ic_media_pause, "Pause", pendingPrevIntent)
-        builder.addAction(prevAction)
 
         // Build the notification.
         val notification = builder.build()
 
         // Start foreground service.
         startForeground(1, notification)
+
+
     }
 
-    private fun stopForegroundService() {
+    private fun setRemoteViews(remoteViews: RemoteViews) {
+
+        // set Intent to open app on notification click.
+        val openAppIntent = Intent(this, MyForeGroundService::class.java)
+
+        // call broadcast when any control of notification is clicked.
+        val closeNotification = Intent(MyForeGroundService.CLOSE_NOTIFICATION)
+        val aButtonIntent = Intent(MyForeGroundService.A_BUTTON)
+        val bButtonIntent = Intent(MyForeGroundService.B_BUTTON)
+        val cButtonIntent = Intent(MyForeGroundService.C_BUTTON)
+
+        val pendingCloseIntent = PendingIntent.getBroadcast(this, 0, closeNotification, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingAButtonIntent = PendingIntent.getBroadcast(this, 0, aButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingBButtonIntent = PendingIntent.getBroadcast(this, 0, bButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingCButtonIntent = PendingIntent.getBroadcast(this, 0, cButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        // Bind the onClickListener to the intended intents for each button
+        remoteViews.setOnClickPendingIntent(R.id.AButton, pendingAButtonIntent)
+        remoteViews.setOnClickPendingIntent(R.id.BButton, pendingBButtonIntent)
+        remoteViews.setOnClickPendingIntent(R.id.CButton, pendingCButtonIntent)
+
+    }
+
+    fun stopForegroundService() {
         Log.d(TAG_FOREGROUND_SERVICE, "Stop foreground service.")
 
         // Stop foreground service and remove the notification.
@@ -137,6 +133,7 @@ class MyForeGroundService : Service() {
         // Stop the foreground service.
         stopSelf()
     }
+
 
     companion object {
 
@@ -150,10 +147,13 @@ class MyForeGroundService : Service() {
 
         val ACTION_PLAY = "ACTION_PLAY"
 
-        val A_BUTTON = "A_BUTTON"
+        val A_BUTTON = "vet.alecri.notifigachi.AButton"
 
-        val B_BUTTON = "B_BUTTON"
+        val B_BUTTON = "vet.alecri.notifigachi.BButton"
 
-        val C_BUTTON = "C_BUTTON"
+        val C_BUTTON = "vet.alecri.notifigachi.CButton"
+
+        val CLOSE_NOTIFICATION = "CLOSE_NOTIFICATION"
     }
+
 }

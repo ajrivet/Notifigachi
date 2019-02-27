@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="vet.alecri.notifigachi">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -10,6 +12,26 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
+        <receiver android:name=".foreground.AButtonReceiver">
+            <intent-filter>
+                <action android:name="vet.alecri.notifigachi.AButton">
+                </action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".foreground.BButtonReceiver">
+            <intent-filter>
+                <action android:name="vet.alecri.notifigachi.BButton">
+                </action>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".foreground.CButtonReceiver">
+            <intent-filter>
+                <action android:name="vet.alecri.notifigachi.CButton">
+                </action>
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".foreground.MyForeGroundService"
@@ -26,3 +48,4 @@
     </application>
 
 </manifest>
+

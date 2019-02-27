@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/layout"
-        android:layout_width="fill_parent"
-        android:layout_height="128dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="64dp"
+    android:gravity="right"
+    android:orientation="horizontal">
 
-    <ImageView android:src="@drawable/ic_fiber_manual_record_black_24dp"
+    <ImageView
         android:id="@+id/image"
-        android:layout_width="128dp"
+        android:layout_width="64dp"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="10dp"/>
+        android:src="@drawable/ic_fiber_manual_record_black_24dp" />
+
     <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="293dp"
-            android:layout_height="match_parent" android:layout_toEndOf="@+id/image"
-            android:layout_marginStart="-10dp" android:gravity="bottom">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <Button
-                android:text="A"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/BButton" android:layout_weight="1"/>
+            android:id="@+id/AButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="A" />
+
         <Button
-                android:text="B"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/AButton" android:layout_weight="1"/>
+            android:id="@+id/BButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="B" />
+
         <Button
-                android:text="C"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/CButton" android:layout_weight="1"/>
+            android:id="@+id/CButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="C" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

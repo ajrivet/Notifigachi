@@ -1,11 +1,18 @@
 package vet.alecri.notifigachi.foreground
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import vet.alecri.notifigachi.R
+
+
+import kotlinx.android.synthetic.main.custom_notification.*
 
 
 class CreateForegroundServiceActivity : AppCompatActivity() { // implements View.OnClickListener{
@@ -29,28 +36,36 @@ class CreateForegroundServiceActivity : AppCompatActivity() { // implements View
             intent.action = MyForeGroundService.ACTION_STOP_FOREGROUND_SERVICE
             startService(intent)
         }
+    }
 
-        // Button intents haha hehe
-        // Need to go somewhere else
-//        val aButtonServiceButton = findViewById(R.id.AButton) as Button
-//        aButtonServiceButton.setOnClickListener{
-//            val intent = Intent(this@CreateForegroundServiceActivity, MyForeGroundService::class.java)
-//            intent.action = MyForeGroundService.A_BUTTON
-//            startService(intent)
-//        }
-//
-//        val bButtonServiceButton = findViewById(R.id.BButton) as Button
-//        bButtonServiceButton.setOnClickListener{
-//            val intent = Intent(this@CreateForegroundServiceActivity, MyForeGroundService::class.java)
-//            intent.action = MyForeGroundService.B_BUTTON
-//            startService(intent)
-//        }
-//
-//        val cButtonServiceButton = findViewById(R.id.CButton) as Button
-//        cButtonServiceButton.setOnClickListener{
-//            val intent = Intent(this@CreateForegroundServiceActivity, MyForeGroundService::class.java)
-//            intent.action = MyForeGroundService.C_BUTTON
-//            startService(intent)
-//        }
+
+}
+
+class mCloseReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+
+    }
+}
+
+class AButtonReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        Toast.makeText(context, "A Button", Toast.LENGTH_LONG).show()
+        Log.d("BROADCAST", "A Button broadcast received")
+    }
+}
+
+class BButtonReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        Toast.makeText(context, "B Button", Toast.LENGTH_LONG).show()
+        Log.d("BROADCAST", "B Button broadcast received")
+
+    }
+}
+
+class CButtonReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        Toast.makeText(context, "C Button", Toast.LENGTH_LONG).show()
+        Log.d("BROADCAST", "C Button broadcast received")
+
     }
 }
